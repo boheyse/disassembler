@@ -67,7 +67,16 @@ class disassembler(object):
 
 
             elif(decimal_opcode == 1160 or decimal_opcode == 1161):
-                print('ADDI')
+                address = str(int(opcode[10:22], 2))
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "ADDI\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', ' + '#' + address)
+
+                print(self.instruction)
 
             elif(decimal_opcode == 1360):
                 rm = reg_1_format
@@ -102,7 +111,16 @@ class disassembler(object):
                 print(self.instruction)
 
             elif(decimal_opcode == 1672 or decimal_opcode == 1673):
-                print('SUBI')
+                address = str(int(opcode[10:22], 2))
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "SUBI\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', ' + '#' + address)
+
+                print(self.instruction)
 
             elif(decimal_opcode >= 1648 and decimal_opcode <= 1687):
                 print('MOVZ')
@@ -120,7 +138,16 @@ class disassembler(object):
                 print('STUR')
 
             elif(decimal_opcode == 1986):
-                print('LDUR')
+                address = str(int(opcode[11:20], 2))
+                rn = opcode[22:27]
+                rt = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "LDUR\t" + self.register_codes[rt] + ', ['
+                                   + self.register_codes[rn] + ', ' + '#' + address + ']')
+
+                print(self.instruction)
 
             elif(decimal_opcode == 2038):
                 print('BREAK')
