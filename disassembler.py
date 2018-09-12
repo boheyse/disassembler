@@ -129,13 +129,42 @@ class disassembler(object):
                 print('MOVK')
 
             elif(decimal_opcode == 1690):
-                print('LSR')
+                rm = reg_1_format
+                shamt = str(int(opcode[16:22], 2))
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "LSR\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', #' + shamt)
+
+                print(self.instruction)
 
             elif(decimal_opcode == 1691):
-                print('LSL')
+                rm = reg_1_format
+                shamt = str(int(opcode[16:22], 2))
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "LSL\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', #' + shamt)
+
+                print(self.instruction)
 
             elif(decimal_opcode == 1984):
-                print('STUR')
+                address = str(int(opcode[11:20], 2))
+                rn = opcode[22:27]
+                rt = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "STUR\t" + self.register_codes[rt] + ', ['
+                                   + self.register_codes[rn] + ', ' + '#' + address + ']')
+
+                print(self.instruction)
 
             elif(decimal_opcode == 1986):
                 address = str(int(opcode[11:20], 2))
@@ -150,11 +179,18 @@ class disassembler(object):
                 print(self.instruction)
 
             elif(decimal_opcode == 2038):
-                print('BREAK')
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "BREAK")
+
+                print(self.instruction)
 
             else:
-                opcode = int(opcode, 2) - 2**32
-                print(opcode)
+                opcode = str(int(opcode, 2) - 2**32)
+                bin = self.binary_array[count]
+                self.instruction = (bin[0:32] + "\t" + self.mem + "\t" + opcode)
+                print(self.instruction)
 
             count += 1
             self.mem = str(int(self.mem) + 4)
