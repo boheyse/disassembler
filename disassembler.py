@@ -5,12 +5,11 @@ class disassembler(object):
                       '01111':'R15', '10000':'R16', '10001':'R17', '10010':'R18', '10011':'R19',
                       '10100':'R20', '10101':'R21', '10110':'R22', '10111':'R23', '11000':'R24',
                       '11001':'R25', '11010':'R26', '11011':'R27', '11100':'R28', '11101':'R29',
-                      '11110':'R30', '1111':'R31'}
-    binary_array = []
-    code_array = []
+                      '11110':'R30', '11111':'R31'}
+    binary_array = []    #holds each line of machine code in separate index's - ex) line 1 = binary_array[0]
     register_array = []     #holds the register or immediate value to be printed
-    instruction = ""
-    mem = '96'
+    instruction = ""     #output instruction that is printed to console
+    mem = '96'          #Starting memory location
 
 
     def __init__(self):
@@ -23,6 +22,7 @@ class disassembler(object):
                 self.binary_array.append(line)
                 print(line)
 
+    # brains of the disassembler, breaks machine code into proper format to be processed
     def run(self):
         count = 0
         while(count < len(self.binary_array)):
@@ -36,8 +36,15 @@ class disassembler(object):
             reg_3_format = opcode[26:32]  #holds final 6 digits
 
             if(decimal_opcode>= 160 and decimal_opcode <=191):
-                print('B')
+                address = str(int(opcode[12:32], 2))
 
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "B\t" + '#' + address)
+
+                print(self.instruction)
+
+                #AND Opcode
             elif(decimal_opcode == 1104):
                 rm = reg_1_format
                 shamt = opcode[16:22]
@@ -51,7 +58,7 @@ class disassembler(object):
 
                 print(self.instruction)
 
-
+                #ADD
             elif(decimal_opcode == 1112):
                 rm = reg_1_format
                 shamt = opcode[16:22]
@@ -65,7 +72,7 @@ class disassembler(object):
 
                 print(self.instruction)
 
-
+                #ADDI
             elif(decimal_opcode == 1160 or decimal_opcode == 1161):
                 address = str(int(opcode[10:22], 2))
                 rn = opcode[22:27]
@@ -78,6 +85,7 @@ class disassembler(object):
 
                 print(self.instruction)
 
+                #ORR
             elif(decimal_opcode == 1360):
                 rm = reg_1_format
                 shamt = opcode[16:22]
@@ -91,12 +99,31 @@ class disassembler(object):
 
                 print(self.instruction)
 
+                #CBZ
             elif(decimal_opcode >= 1440 and decimal_opcode <= 1447):
-                print('CBZ')
+                address = str(int(opcode[8:27]))
+                rd = opcode[27:32]
 
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "CBZ\t" + self.register_codes[rd] + ', #'
+                                   + address)
+
+                print(self.instruction)
+
+                #CBNZ
             elif(decimal_opcode >= 1448 and decimal_opcode <= 1455):
-                print('CBNZ')
+                address = str(int(opcode[8:27]))
+                rd = opcode[27:32]
 
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "CBNZ\t" + self.register_codes[rd] + ', #'
+                                   + address)
+
+                print(self.instruction)
+
+                #SUB
             elif(decimal_opcode == 1624):
                 rm = reg_1_format
                 shamt = opcode[16:22]
@@ -110,6 +137,7 @@ class disassembler(object):
 
                 print(self.instruction)
 
+                #SUBI
             elif(decimal_opcode == 1672 or decimal_opcode == 1673):
                 address = str(int(opcode[10:22], 2))
                 rn = opcode[22:27]
@@ -122,12 +150,33 @@ class disassembler(object):
 
                 print(self.instruction)
 
+                #MOVZ
             elif(decimal_opcode >= 1648 and decimal_opcode <= 1687):
-                print('MOVZ')
+                shamt = str(int(opcode[9:11], 2))
+                address = str(int(opcode[11:27], 2))
+                rd = opcode[27:32]
 
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "MOVZ\t" + self.register_codes[rd] + ', '
+                                   + address + ', LSL ' + shamt)
+
+                print(self.instruction)
+
+                #MOVK
             elif(decimal_opcode >= 1940 and decimal_opcode <= 1943):
-                print('MOVK')
+                shamt = str(int(opcode[9:11], 2))
+                address = str(int(opcode[11:27], 2))
+                rd = opcode[27:32]
 
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "MOVK\t" + self.register_codes[rd] + ', '
+                                   + address + ', LSL ' + shamt)
+
+                print(self.instruction)
+
+                #LSR
             elif(decimal_opcode == 1690):
                 rm = reg_1_format
                 shamt = str(int(opcode[16:22], 2))
@@ -141,6 +190,7 @@ class disassembler(object):
 
                 print(self.instruction)
 
+                #LSL
             elif(decimal_opcode == 1691):
                 rm = reg_1_format
                 shamt = str(int(opcode[16:22], 2))
@@ -154,6 +204,7 @@ class disassembler(object):
 
                 print(self.instruction)
 
+                #STUR
             elif(decimal_opcode == 1984):
                 address = str(int(opcode[11:20], 2))
                 rn = opcode[22:27]
@@ -166,6 +217,7 @@ class disassembler(object):
 
                 print(self.instruction)
 
+                #LDUR
             elif(decimal_opcode == 1986):
                 address = str(int(opcode[11:20], 2))
                 rn = opcode[22:27]
@@ -178,6 +230,7 @@ class disassembler(object):
 
                 print(self.instruction)
 
+                #BREAK
             elif(decimal_opcode == 2038):
 
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
@@ -186,10 +239,11 @@ class disassembler(object):
 
                 print(self.instruction)
 
+                #NUMBERS
             else:
+                bin = opcode[0:32]
                 opcode = str(int(opcode, 2) - 2**32)
-                bin = self.binary_array[count]
-                self.instruction = (bin[0:32] + "\t" + self.mem + "\t" + opcode)
+                self.instruction = (bin + "\t" + self.mem + "\t" + opcode)
                 print(self.instruction)
 
             count += 1
