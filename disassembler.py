@@ -1,3 +1,5 @@
+import sys
+
 class disassembler(object):
     register_codes = {'00000':'R0', '00001':'R1', '00010':'R2', '00011':'R3', '00100':'R4',
                       '00101':'R5', '00110':'R6', '00111':'R7', '01000':'R8', '01001':'R9 ',
@@ -17,14 +19,15 @@ class disassembler(object):
 
         #populate binary_array with .txt file
     def load_file(self):
-        with open('test2_bin.txt') as my_file:
-            for line in my_file:
+        with open(sys.argv[2]) as in_file:
+            for line in in_file:
                 self.binary_array.append(line)
-                print(line)
+            in_file.close()
 
     # brains of the disassembler, breaks machine code into proper format to be processed
     def run(self):
         count = 0
+        out_file = open(sys.argv[4] + '.txt', 'w')
         while(count < len(self.binary_array)):
             opcode = str(self.binary_array[count])
             decimal_opcode = int(opcode[0:11], 2)   #holds the decimal opcode value
@@ -40,9 +43,9 @@ class disassembler(object):
 
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
-                                   + self.mem + "\t" + "B\t" + '#' + address)
+                                   + self.mem + "\t" + "B\t" + '#' + address + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #AND Opcode
             elif(decimal_opcode == 1104):
@@ -54,9 +57,10 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "AND\t" + self.register_codes[rd] + ', '
-                                   + self.register_codes[rn] + ', ' + self.register_codes[rm])
+                                   + self.register_codes[rn] + ', ' + self.register_codes[rm] +
+                                   '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #ADD
             elif(decimal_opcode == 1112):
@@ -68,9 +72,10 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "ADD\t" + self.register_codes[rd] + ', '
-                                   + self.register_codes[rn] + ', ' + self.register_codes[rm])
+                                   + self.register_codes[rn] + ', ' + self.register_codes[rm] +
+                                   '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #ADDI
             elif(decimal_opcode == 1160 or decimal_opcode == 1161):
@@ -81,9 +86,9 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "ADDI\t" + self.register_codes[rd] + ', '
-                                   + self.register_codes[rn] + ', ' + '#' + address)
+                                   + self.register_codes[rn] + ', ' + '#' + address + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #ORR
             elif(decimal_opcode == 1360):
@@ -95,9 +100,13 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "ORR\t" + self.register_codes[rd] + ', '
-                                   + self.register_codes[rn] + ', ' + self.register_codes[rm])
+                                   + self.register_codes[rn] + ', ' + self.register_codes[rm] +
+                                   '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
+
+                #EOR???
+            #elif(decimal_opcode == )
 
                 #CBZ
             elif(decimal_opcode >= 1440 and decimal_opcode <= 1447):
@@ -107,9 +116,9 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "CBZ\t" + self.register_codes[rd] + ', #'
-                                   + address)
+                                   + address + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #CBNZ
             elif(decimal_opcode >= 1448 and decimal_opcode <= 1455):
@@ -119,9 +128,9 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "CBNZ\t" + self.register_codes[rd] + ', #'
-                                   + address)
+                                   + address + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #SUB
             elif(decimal_opcode == 1624):
@@ -133,9 +142,10 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "SUB\t" + self.register_codes[rd] + ', '
-                                   + self.register_codes[rn] + ', ' + self.register_codes[rm])
+                                   + self.register_codes[rn] + ', ' + self.register_codes[rm] +
+                                   '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #SUBI
             elif(decimal_opcode == 1672 or decimal_opcode == 1673):
@@ -146,9 +156,9 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "SUBI\t" + self.register_codes[rd] + ', '
-                                   + self.register_codes[rn] + ', ' + '#' + address)
+                                   + self.register_codes[rn] + ', ' + '#' + address + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #MOVZ
             elif(decimal_opcode >= 1648 and decimal_opcode <= 1687):
@@ -159,9 +169,9 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "MOVZ\t" + self.register_codes[rd] + ', '
-                                   + address + ', LSL ' + shamt)
+                                   + address + ', LSL ' + shamt + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #MOVK
             elif(decimal_opcode >= 1940 and decimal_opcode <= 1943):
@@ -172,9 +182,9 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "MOVK\t" + self.register_codes[rd] + ', '
-                                   + address + ', LSL ' + shamt)
+                                   + address + ', LSL ' + shamt + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #LSR
             elif(decimal_opcode == 1690):
@@ -186,9 +196,9 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "LSR\t" + self.register_codes[rd] + ', '
-                                   + self.register_codes[rn] + ', #' + shamt)
+                                   + self.register_codes[rn] + ', #' + shamt + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #LSL
             elif(decimal_opcode == 1691):
@@ -200,9 +210,9 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "LSL\t" + self.register_codes[rd] + ', '
-                                   + self.register_codes[rn] + ', #' + shamt)
+                                   + self.register_codes[rn] + ', #' + shamt + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #STUR
             elif(decimal_opcode == 1984):
@@ -213,9 +223,9 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "STUR\t" + self.register_codes[rt] + ', ['
-                                   + self.register_codes[rn] + ', ' + '#' + address + ']')
+                                   + self.register_codes[rn] + ', ' + '#' + address + ']' + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #LDUR
             elif(decimal_opcode == 1986):
@@ -226,28 +236,30 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "LDUR\t" + self.register_codes[rt] + ', ['
-                                   + self.register_codes[rn] + ', ' + '#' + address + ']')
+                                   + self.register_codes[rn] + ', ' + '#' + address + ']' + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #BREAK
             elif(decimal_opcode == 2038):
 
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
-                                   + self.mem + "\t" + "BREAK")
+                                   + self.mem + "\t" + "BREAK" + '\n')
 
-                print(self.instruction)
+                out_file.write(self.instruction)
 
                 #NUMBERS
             else:
                 bin = opcode[0:32]
                 opcode = str(int(opcode, 2) - 2**32)
-                self.instruction = (bin + "\t" + self.mem + "\t" + opcode)
-                print(self.instruction)
+                self.instruction = (bin + "\t" + self.mem + "\t" + opcode + '\n')
+                out_file.write(self.instruction)
 
             count += 1
             self.mem = str(int(self.mem) + 4)
+
+        out_file.close()
 
 
 
