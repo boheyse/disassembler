@@ -118,9 +118,6 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
-                #EOR???
-            #elif(decimal_opcode == )
-
                 #CBZ
             elif(decimal_opcode >= 1440 and decimal_opcode <= 1447):
                 address = str(int(opcode[8:27]))
@@ -142,6 +139,21 @@ class disassembler(object):
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "CBNZ\t" + self.register_codes[rd] + ', #'
                                    + address + '\n')
+
+                out_file.write(self.instruction)
+
+                #EOR
+            elif(decimal_opcode == 1624):
+                rm = reg_1_format
+                shamt = opcode[16:22]
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "EOR\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', ' + self.register_codes[rm] +
+                                   '\n')
 
                 out_file.write(self.instruction)
 
