@@ -186,6 +186,20 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
+                #BR
+            elif(decimal_opcode == 1712):
+                rm = reg_1_format
+                shamt = str(int(opcode[16:22], 2))
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "BR\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', ' + shamt + '\n')
+
+                out_file.write(self.instruction)
+
                 #MOVK
             elif(decimal_opcode >= 1940 and decimal_opcode <= 1943):
                 shamt = str(int(opcode[9:11], 2))
