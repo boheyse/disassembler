@@ -62,6 +62,19 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
+                #ANDI
+            elif(decimal_opcode == 1168 or decimal_opcode == 1169):
+                address = str(int(opcode[10:22], 2))
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "ANDI\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', ' + '#' + address + '\n')
+
+                out_file.write(self.instruction)
+
                 #ADD
             elif(decimal_opcode == 1112):
                 rm = reg_1_format
