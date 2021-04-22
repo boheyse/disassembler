@@ -294,6 +294,19 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
+                #SUBIS
+            elif(decimal_opcode == 1928 or decimal_opcode == 1929):
+                address = str(int(opcode[10:22], 2))
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "SUBI\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', ' + '#' + address + '\n')
+
+                out_file.write(self.instruction)
+
                 #STUR
             elif(decimal_opcode == 1984):
                 address = str(int(opcode[11:20], 2))
