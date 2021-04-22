@@ -47,6 +47,19 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
+                #EORI
+            elif(decimal_opcode == 840 or decimal_opcode == 841):
+                address = str(int(opcode[10:22], 2))
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "EORI\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', ' + '#' + address + '\n')
+
+                out_file.write(self.instruction)
+
                 #AND Opcode
             elif(decimal_opcode == 1104):
                 rm = reg_1_format
