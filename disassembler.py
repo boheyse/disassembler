@@ -371,22 +371,6 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
-                #BREAK
-            elif(decimal_opcode == 2038):
-
-                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
-                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
-                                   + self.mem + "\t" + "BREAK" + '\n')
-
-                out_file.write(self.instruction)
-
-                #NUMBERS
-            else:
-                bin = opcode[0:32]
-                opcode = str(int(opcode, 2) - 2**32)
-                self.instruction = (bin + "\t" + self.mem + "\t" + opcode + '\n')
-                out_file.write(self.instruction)
-
             count += 1
             self.mem = str(int(self.mem) + 4)
 
