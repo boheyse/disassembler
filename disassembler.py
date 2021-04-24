@@ -48,6 +48,8 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
+                #TODO: Add B.cond
+
                 #EORI
             elif(decimal_opcode == 840 or decimal_opcode == 841):
                 address = str(int(opcode[10:22], 2))
