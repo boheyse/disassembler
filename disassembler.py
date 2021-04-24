@@ -371,6 +371,14 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
+                #DUMP
+            elif(decimal_opcode == 2045):
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "DUMP" + '\n')
+
+                out_file.write(self.instruction)
+
             count += 1
             self.mem = str(int(self.mem) + 4)
 
