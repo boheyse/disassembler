@@ -130,6 +130,17 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
+                #BL
+            if(decimal_opcode>= 1184 and decimal_opcode <=1215):
+                address = str(int(opcode[12:32], 2))
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "BL\t" + '#' + address + '\n')
+
+                out_file.write(self.instruction)
+
+
                 #ORR
             elif(decimal_opcode == 1360):
                 rm = reg_1_format
