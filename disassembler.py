@@ -247,7 +247,7 @@ class disassembler(object):
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
                                    + self.mem + "\t" + "MOVZ\t" + self.register_codes[rd] + ', '
-                                   + address + ', LSL ' + shamt + '\n')
+                                   + address + '\n')
 
                 out_file.write(self.instruction)
 
@@ -260,8 +260,7 @@ class disassembler(object):
 
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
-                                   + self.mem + "\t" + "BR\t" + self.register_codes[rd] + ', '
-                                   + self.register_codes[rn] + ', ' + shamt + '\n')
+                                   + self.mem + "\t" + "BR\t" + self.register_codes[rd] + '\n')
 
                 out_file.write(self.instruction)
 
@@ -273,8 +272,8 @@ class disassembler(object):
 
                 self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
                                    + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
-                                   + self.mem + "\t" + "MOVK\t" + self.register_codes[rd] + ', '
-                                   + address + ', LSL ' + shamt + '\n')
+                                   + self.mem + "\t" + "MOVK\t" + self.register_codes[rd] + ', #'
+                                   + address + '\n')
 
                 out_file.write(self.instruction)
 
