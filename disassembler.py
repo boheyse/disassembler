@@ -38,6 +38,7 @@ class disassembler(object):
             reg_2_format = opcode[21:26] #holds the second specified register destination digits, 5 total
             reg_3_format = opcode[26:32]  #holds final 6 digits
 
+                #B
             if(decimal_opcode>= 160 and decimal_opcode <=191):
                 address = str(int(opcode[12:32], 2))
 
