@@ -140,6 +140,21 @@ class disassembler(object):
 
                 out_file.write(self.instruction)
 
+                #MUL
+            elif(decimal_opcode == 1112):
+                rm = reg_1_format
+                shamt = opcode[16:22]
+                rn = opcode[22:27]
+                rd = opcode[27:32]
+
+                self.instruction = (op_1_format + " " + op_2_format + " " + reg_1_format + " "
+                                   + imm_format + " " + reg_2_format + " " + reg_3_format + "\t"
+                                   + self.mem + "\t" + "MUL\t" + self.register_codes[rd] + ', '
+                                   + self.register_codes[rn] + ', ' + self.register_codes[rm] +
+                                   '\n')
+
+                out_file.write(self.instruction)
+
 
                 #ORR
             elif(decimal_opcode == 1360):
